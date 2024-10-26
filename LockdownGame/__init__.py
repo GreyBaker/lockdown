@@ -4,5 +4,5 @@ from gymnasium.envs.registration import register
 
 register(
     id='Lockdown_Game-v0',
-    entry_point='Game.Lockdown:LockdownEnv',
+    entry_point='LockdownGame.Lockdown:LockdownEnv',
 )
