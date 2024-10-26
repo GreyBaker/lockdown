@@ -114,7 +114,8 @@ class LockdownEnv(gym.Env):
       'broadcast': True,
       'data': {
         'playerName': current_player.name,
-        'hand': current_player.getHand(), # TODO: include other trick information
+        'hand': current_player.getHand(),
+        'cards': self.round.trick.info()
       }
     }
 
@@ -147,7 +148,7 @@ class LockdownEnv(gym.Env):
       'event_name': self.event,
       'broadcast': True,
       'data': {
-        # TODO: trick information
+        'currentTrick' : self.round.trick.info()
       }
     }
 
@@ -167,7 +168,7 @@ class LockdownEnv(gym.Env):
       'data': {
         'trickWinner': self.round.trick.winner,
         'winnerLockdown': self.round.trick.winner_lockdown, 
-        # TODO: include other trick information, probably about cards played
+        'cards' : self.round.trick.info()
       }
     }
 

@@ -34,4 +34,6 @@ class Trick:
       if (self.plays[i].suit == self.lead and self.plays[i] > self.plays[self.winner]):
         self.winner = i
 
+  def info(self):
 
+    return [{'playerName' : str(idx), 'card':str(play)} for idx, play in enumerate(self.plays) if play is not None]

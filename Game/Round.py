@@ -49,6 +49,6 @@ class Round:
       self.roundComplete = True
 
   def startTrick(self):
-    self.trick = Trick()
+    self.trick = Trick(self.current_lead)
 
     

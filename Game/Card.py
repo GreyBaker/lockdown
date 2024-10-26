@@ -30,7 +30,7 @@ class Card:
     return self.suit == other.suit and self.rank < other.rank
 
   def __str__(self):
-    return str(self.rank) + str(self.suit)
+    return str(self.rank).zfill(2) + "|" + str(self.suit)
 
 
 
