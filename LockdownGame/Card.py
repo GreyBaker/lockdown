@@ -21,16 +21,19 @@ class Card:
   def __eq__(self, other):
     return type(other) == Card and (self.rank == other.rank and self.suit == other.suit)
   
-  # These for sorting purposes in hand only
+  # These for sorting purposes in hand only, hand variation is arbitrary
   def __gt__(self, other):
     assert type(other) == Card
-    return self.suit == other.suit and self.rank > other.rank
+    return self.suit < other.suit or self.rank > other.rank
   def __lt__(self, other):
     assert type(other) == Card
-    return self.suit == other.suit and self.rank < other.rank
+    return self.suit < other.suit or self.rank < other.rank
 
   def __str__(self):
     return str(self.rank).zfill(2) + "|" + str(self.suit)
+  
+  def info(self):
+    return {'rank': self.rank, 'suit':self.suit}
 
 
 

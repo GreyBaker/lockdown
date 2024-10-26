@@ -9,9 +9,7 @@ class Player:
 
     def play(self, card):
         return self.hand.playCard(card)
-    
-    def getHand(self):
-        pass # TODO
+
 
     def hasSuit(self, suit_id : int):
         return len(self.hand.hand[suit_id]) > 0

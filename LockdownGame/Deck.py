@@ -19,7 +19,7 @@ class Deck:
     return str(self.deck)
   
   def shuffle(self):
-    random.shuffle(self.deck, random.random)
+    random.shuffle(self.deck)
 
   def deal(self):
     return self.deck.pop(0)

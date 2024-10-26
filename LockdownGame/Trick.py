@@ -1,4 +1,4 @@
-from Card import Card, Suit
+from .Card import Card, Suit
 
 
 class Trick:
@@ -35,5 +35,4 @@ class Trick:
         self.winner = i
 
   def info(self):
-
-    return [{'playerName' : str(idx), 'card':str(play)} for idx, play in enumerate(self.plays) if play is not None]
+    return [{'playerName' : str(idx), 'card':play.info()} for idx, play in enumerate(self.plays) if play is not None]

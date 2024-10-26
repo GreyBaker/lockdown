@@ -69,3 +69,15 @@ class Hand:
   
   def __str__(self):
     return str(self.hand)
+  
+  def getSimplifiedHand(self) -> list[Card]:
+
+    combined_list = []
+
+    for suit_list in self.hand:
+      combined_list += suit_list
+
+    return combined_list
+  
+  def info(self):
+    return [card.info() for card in self.getSimplifiedHand()]
