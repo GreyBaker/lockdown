@@ -1,4 +1,4 @@
-from .player import LockdownPlayer
+# from .player import LockdownPlayer
 from .action_event import *
 
 class LockdownMove(object):
@@ -7,13 +7,13 @@ class LockdownMove(object):
 
 class PlayerMove(LockdownMove):
 
-  def __init__(self, player : LockdownPlayer, action : ActionEvent):
+  def __init__(self, player , action : ActionEvent):
     super().__init__()
     self.player = player
     self.action = action
 
 class DealHandMove(LockdownMove):
-  def __init__(self, player_dealing: LockdownPlayer, shuffled_deck: list[Card]):
+  def __init__(self, player_dealing, shuffled_deck: list[Card]):
     super().__init__()
     self.player_dealing = player_dealing
     self.shuffled_deck = shuffled_deck
@@ -23,7 +23,7 @@ class DealHandMove(LockdownMove):
     return "{} deal shuffled_deck=[{}]".format(self.player_dealing, shuffled_deck_text)
 
 class ScoreMove(LockdownMove):
-  def __init__(self, player : LockdownPlayer, action : ActionEvent, score : int):
+  def __init__(self, player , action : ActionEvent, score : int):
     self.player = player
     self.action = action
     self.score = score
@@ -34,7 +34,7 @@ class ScoreMove(LockdownMove):
   
 class PlayCardMove(LockdownMove):
 
-  def __init__(self, player : LockdownPlayer, action : PlayCardAction):
+  def __init__(self, player , action : PlayCardAction):
     super().__init__()
     self.player = player
     self.action = action

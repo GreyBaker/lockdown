@@ -12,6 +12,7 @@ class LockdownPlayer:
 
     self.lockdown_time = 0
 
+    self.last_score = 0
     # self.cards_seen = [False for _ in range(52)] 
 
   def get_player_id(self) -> int:

@@ -1,17 +1,17 @@
 from typing import Callable
 from .player import LockdownPlayer
-from .game import LockdownGame
+# from .game import LockdownGame
 from .action_event import *
 from .utils import EmptyCard
 
 class LockdownScorer:
-  def __init__(self, get_payoff: Callable[[LockdownPlayer, LockdownGame], int | float] = None):
+  def __init__(self, get_payoff  = None): # Payoff Callable[[LockdownPlayer, 'LockdownGame'], int | float]
     self.get_payoff = get_payoff if get_payoff else get_payoff_v0
 
-  def get_payoffs(self, game: LockdownGame):
+  def get_payoffs(self, game):
     return [self.get_payoff(player=player, game=game) for player in game.round.players]
 
-def get_payoff_v0(player : LockdownPlayer, game: LockdownGame) -> float:
+def get_payoff_v0(player : LockdownPlayer, game) -> float:
 
   return game.round.tricks_taken[player.get_player_id()]
   
@@ -20,7 +20,7 @@ def get_payoff_v0(player : LockdownPlayer, game: LockdownGame) -> float:
 class LockdownJudge:
   
 
-  def __init__(self, game: LockdownGame):
+  def __init__(self, game):
     self.game = game
     self.scorer = LockdownScorer()
 
