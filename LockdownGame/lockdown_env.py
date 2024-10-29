@@ -149,7 +149,7 @@ class FundamentalLockdownEnv(object):
 
 
 class LockdownEnv(AECEnv):
-  from pettingzoo.classic.rlcard_envs.rlcard_base import RLCardBase # reference
+  # from pettingzoo.classic.rlcard_envs.rlcard_base import RLCardBase # reference
   
   def __init__(self):
     super().__init__()
