@@ -34,12 +34,19 @@ def get_card(card_id: int):
   return _deck[card_id]
 
 
-def get_card_id(card :Card) -> int:
+def get_card_id(card : str | Card) -> int:
+
+  if isinstance(card, str):
+    suit = card[0]
+    rank = card[1]
+  else:
+    suit = card.suit
+    rank = card.rank
   
-  if isinstance(card, EmptyCard):
+  if isinstance(card, EmptyCard) or card == "EmptyCard":
     return 56
 
-  return Card.valid_suit.index(card.suit) + Card.valid_rank.index(card.rank) * 13
+  return Card.valid_suit.index(suit) * 13 + Card.valid_rank.index(rank)
 
 
 
@@ -49,8 +56,13 @@ def get_deck() -> list[Card]:
 
 def encode_cards(cards : list[Card]) -> np.ndarray:
   plane = np.zeros(52, dtype=int)
-  for card in cards:
+  for card in (cards if cards is not None else []):
     if isinstance(card, EmptyCard): # ??? may need to include empty card in trick info sometimes
       continue
+      
+    card_id = get_card_id(card) # TODO: complete
+    if card_id == 56:
+      continue
 
-    card_id = get_card_id(card)
+    plane[card_id] = 1
+  return plane
