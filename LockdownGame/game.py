@@ -4,11 +4,12 @@ from .judge import LockdownJudge
 from .round import LockdownRound
 from .player import LockdownPlayer
 
+from .utils import EmptyCard
 
 class LockdownGame:
   def __init__(self):
+    self.np_random = None
     self.allow_step_back = False
-    self.np_random = np.random.RandomState()
     self.judge = LockdownJudge(game=self)
     self.actions : None | list[ActionEvent] = None
     self.round : None | LockdownRound = None
@@ -18,7 +19,7 @@ class LockdownGame:
     dealer_id = self.np_random.choice([0, 1, 2, 3])
 
     self.actions = []
-    self.round = LockdownRound()
+    self.round = LockdownRound(dealer_id=dealer_id, np_random=self.np_random)
     
     for i in range(4):
       player = self.round.players[(dealer_id + 1 + i) % 4]
@@ -73,7 +74,7 @@ class LockdownGame:
       discard_pile = self.round.dealer.discard_pile
       # last_action = self.get_last_action()
 
-      unknown_cards = []
+      unknown_cards : list[Card] = []
       for i in range(4):
         if i == self.round.current_player_id:
           continue
@@ -83,7 +84,11 @@ class LockdownGame:
       state['player_id'] = self.round.current_player_id
       state['hand'] = [x.get_index() for x in self.round.players[self.round.current_player_id].hand]
       state['discard'] = [x.get_index() for x in discard_pile]
-      state['unknown_cards'] = [x.get_index() for x in unknown_cards]
+      state['unknown'] = [x.get_index() for x in unknown_cards if not isinstance(x, EmptyCard)]
+      
+      state['trick'] = {}
+      for idx, card in enumerate(self.round.trick):
+        state['trick'][idx] = card
 
     return state
 

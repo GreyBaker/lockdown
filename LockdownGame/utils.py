@@ -1,10 +1,10 @@
 
 from rlcard.games.base import Card
+import numpy as np
 
 class EmptyCard(Card):
   def __init__(self):
-    self.suit = "E"
-    pass
+    super().__init__("E", "0")
 
   def __str__(self):
     return "EmptyCard"
@@ -46,3 +46,11 @@ def get_card_id(card :Card) -> int:
 def get_deck() -> list[Card]:
   return _deck.copy()
 
+
+def encode_cards(cards : list[Card]) -> np.ndarray:
+  plane = np.zeros(52, dtype=int)
+  for card in cards:
+    if isinstance(card, EmptyCard): # ??? may need to include empty card in trick info sometimes
+      continue
+
+    card_id = get_card_id(card)

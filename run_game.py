@@ -1,7 +1,7 @@
 import random
-from LockdownGame import *
+from pz_lockdown import env as LockdownEnv
 
-env = LockdownParallelEnv()
+env = LockdownEnv()
 observations = env.reset()
 
 done = {agent: False for agent in env.agents}

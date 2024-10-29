@@ -4,9 +4,9 @@ from .utils import EmptyCard
 
 
 class LockdownPlayer:
-  def __init__(self, id, np_random :np.random):
+  def __init__(self, player_id, np_random :np.random):
 
-    self.player_id = id
+    self.player_id = player_id
     self.np_random = np_random
     self.hand : list[Card] = []
 

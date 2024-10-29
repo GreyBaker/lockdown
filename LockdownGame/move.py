@@ -32,6 +32,9 @@ class ScoreMove(LockdownMove):
   def __str__(self):
     return f"Scoring for {self.player} gets {self.score}"
   
+  def __eq__(self, other): # Anonymous to score
+    return isinstance(other, ScoreMove) and other.player == self.player
+  
 class PlayCardMove(LockdownMove):
 
   def __init__(self, player , action : PlayCardAction):
