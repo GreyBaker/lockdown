@@ -9,16 +9,20 @@ class LockupGame:
     self.dealer = -1
     self.trick_winner = -1
     self._deal_round_and_state_first_player()
+    self._clean_scores()
+
+  def _clean_scores(self):
+    self.player_scores = np.zeros((4,), dtype=np.int32) # Only in one-round variant
+
 
   def _deal_round_and_state_first_player(self, force_random_dealer : bool = False) -> int:
     # Cleaning
 
     # Reset scores and timers
     self.player_lockup_timers = np.zeros((4,), dtype=np.int32)
-    self.player_scores = np.zeros((4,), dtype=np.int32) # Only in one-round variant
     
     # Reset dealing and turn order information
-    self.dealer = np.random.randint(0, 3+1) if (self.dealer == -1 or force_random_dealer) else self.dealer + 1
+    self.dealer = np.random.randint(0, 3+1) if (self.dealer == -1 or force_random_dealer) else (self.dealer + 1) % 4
     self.next_player = self.dealer
     self.lead_player = self.dealer
 
@@ -65,11 +69,14 @@ class LockupGame:
 
     # self.unknown_cards = np.zeros((1, 52))
     uc = self.held_cards.copy()
-    np.delete(uc, player_id)
-    uc = uc.sum(axis=1)
+    uc = np.delete(uc, player_id, axis = 0)
+    uc = uc.sum(axis=0)
     
     # Could later choose to track actions across time or otherwise develop a profile
+    # print("BASIC SHAPES")
+    # print(plt.shape, ps.shape, lp.shape, pctr.shape, dc.shape, hc.shape, uc.shape)
     obs = np.concat((plt, ps, lp, pctr, dc, hc, uc))
+    # 4 in 0-4, 4 in 0-32, 4 in 0-1, 212 in 0-1, 208 in 0-1, 52 in 0-1, 52 in 0-1
 
     return obs
     
@@ -204,6 +211,7 @@ class LockupGame:
     self.played_cards_this_round = np.zeros((4, 53), dtype=np.int32)
 
     self.lead_player = best_player
+    assert 0 <= self.lead_player < 4
     self.next_player = best_player
     return self.lead_player
 
@@ -222,7 +230,7 @@ class LockupGame:
   
   @staticmethod
   def str_collection_info(collection) -> str:
-    assert len(collection) <= 52
+    assert len(collection) <= 53
 
     return ("".join([LockupGame._index_to_card_name(idx) + ", " if collection[idx] == 1 else "" for idx in range(len(collection))]))
 

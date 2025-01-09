@@ -1,36 +1,26 @@
-import torch
-import tqdm
-import numpy as np
+import os; os.environ['PYTHONWARNINGS']='ignore::DeprecationWarnings'
 
+from FormalEnvironment import LockupEnvRay
 
-import numpy as np
-from LowAbstractionEnvironment import LockupGame
-import FormalEnvironment
+def test_lockup_env_minimal():
+  # Initialize the environment
+  env = LockupEnvRay()
 
-def test_lockup_game():
-    game = LockupGame()
-    
-    # Test initial state
-    assert game.dealer >= 0 and game.dealer < 4
-    assert np.sum(game.held_cards) == 52
-    assert np.sum(game.player_scores) == 0
-    assert np.sum(game.player_lockup_timers) == 0
-    
-    # Test a few rounds of play
-    for _ in range(20):
-        player = game.next_player
-        print("\nplayer", player)
-        game.print_player_hand(player)
-        action_space = game.present_action_space(player)
-        game.print_player_hand(player)
-        valid_actions = np.where(action_space == 1)[0]
-        if len(valid_actions) > 0:
-            action = np.random.choice(valid_actions)
-            print("taken", LockupGame._index_to_card_name(action))
-            next_player = game.make_play_and_state_next_player(player, action)
-            # print("np", next_player)
-            assert 0 <= next_player < 4 or next_player == -1
-    
-    print("Basic LockupGame test passed!")
+  # Test reset
+  obs, info = env.reset()
+  assert isinstance(obs, dict), "Reset should return a dictionary of observations."
+  print("Reset passed.")
 
-test_lockup_game()
+  # Test step with random actions
+  action_dict = {i: env.action_space.sample() for i in range(env.num_players)}
+  obs, rewards, dones, infos = env.step(action_dict)
+  
+  assert isinstance(obs, dict), "Step should return a dictionary of observations."
+  assert isinstance(rewards, dict), "Step should return a dictionary of rewards."
+  assert isinstance(dones, dict), "Step should return a dictionary of done flags."
+  assert "__all__" in dones, 'The "dones" dictionary must contain an "__all__" key.'
+  
+  print("Step passed.")
+
+if __name__ == "__main__":
+  test_lockup_env_minimal()
