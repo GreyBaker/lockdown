@@ -27,10 +27,10 @@ class LockupEnvRay(MultiAgentEnv):
 
         # self.observation_space = spaces.Dict(self.observation_spaces)
         # self.action_space = spaces.Dict(self.action_spaces)
-        print("Init complete")
+        # print("Init complete")
     
     def render(self):
-        print("start render")
+        # print("start render")
         # Do a lil render
         print()
         print(self.game.player_scores)
@@ -40,34 +40,37 @@ class LockupEnvRay(MultiAgentEnv):
 
 
     def reset(self, seed=None, options=None):
-        print("start reset")
+        # print("start reset")
+        self.game.player_scores = np.ndarray(shape=(4, ), dtype=np.int32)
         self.i = self.game._deal_round_and_state_first_player()
         single_obs = self.game.present_observation_space(self.i)
         info = {}
         
-        print("on reset", type(single_obs), single_obs.shape)
+        # print("on reset", type(single_obs), single_obs.shape)
         # return single_obs, info
-        with open("out.txt", 'w') as f:
-            f.write(str(single_obs))
+        
+        # print(self.i)
+
         return {self.i : single_obs}, info
         # return obs
     
     def step(self, action_dict):
-        print("start step")
+        # print("start step")
         # action = action_dict[player_id]
+        # print(action_dict, self.i)
         self.i = self.game.make_play_and_state_next_player(self.i, action_dict[self.i])
 
-        obs = self._get_obs()
-        print("?????????", obs[0].shape)
-        rewards = self._get_rewards()
+        # obs = self._get_obs()
+        # print("?????????", obs[0].shape)
+        # rewards = self._get_rewards()
         dones = self._get_dones()
-        infos = self._get_infos()
+        # infos = self._get_infos()
 
-        print("RAH IMA RETURN ON STEP !!!")
+        # print("RAH IMA RETURN ON STEP !!!")
         return (
             {self.i : self.game.present_observation_space(self.i)},
             {self.i : self.game.player_scores[self.i]},
-            {"__all__": False},
+            dones,
             # {"__all__": False},
             {},
         )

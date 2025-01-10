@@ -204,7 +204,8 @@ class LockupGame:
 
     # Upkeep
     if self.held_cards.sum(axis=1).sum(axis=0) == 0:
-      return -1 # Signals that the round is over. Demands a new deal
+      return self._deal_round_and_state_first_player()
+      # return -1 # Signals that the round is over. Demands a new deal
     
     for i in range(4):
       self.discarded_cards[i] += self.played_cards_this_round[i, :52]
